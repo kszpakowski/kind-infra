@@ -4,5 +4,6 @@ bases:
 - ../base
 resources:
 - argo-workflows-sso-secret.yaml
+- argo-workflows-ingress.yaml
 patchesStrategicMerge:
 - dex-sso.yaml
