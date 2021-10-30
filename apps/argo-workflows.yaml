@@ -2,21 +2,18 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: argo-workflows
-  namespace: argocd
 spec:
   destination:
-    server: https://kubernetes.default.svc
     namespace: argo
-  project: default
+    server: 'https://kubernetes.default.svc'
   source:
-    directory:
-      recurse: true
-    path: ./argo-workflows/base
-    repoURL: https://github.com/kszpakowski/kind-infra.git
+    path: argo-workflows/overlays
+    repoURL: 'https://github.com/kszpakowski/kind-infra'
     targetRevision: HEAD
+  project: default
   syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
     automated:
       prune: true
       selfHeal: true
-    syncOptions:
-      - CreateNamespace=true
