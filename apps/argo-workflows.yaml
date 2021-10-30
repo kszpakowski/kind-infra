@@ -11,7 +11,7 @@ spec:
   source:
     directory:
       recurse: true
-    path: ./argo-workflows/overlays
+    path: ./argo-workflows
     repoURL: https://github.com/kszpakowski/kind-infra.git
     targetRevision: HEAD
   syncPolicy:
