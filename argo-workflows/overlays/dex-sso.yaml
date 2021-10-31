@@ -11,6 +11,15 @@ spec:
           args:
             - server
             - --auth-mode=sso
+          volumeMounts:
+            - name: ca
+              mountPath: /etc/ssl/certs/ca.crt
+              subPath: ca.crt
+              readOnly: true
+      volumes:
+        - name: ca
+          configMap:
+            name: ca-cm
 ---
 apiVersion: v1
 kind: ConfigMap
