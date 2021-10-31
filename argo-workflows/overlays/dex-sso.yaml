@@ -11,6 +11,7 @@ spec:
           args:
             - server
             - --auth-mode=sso
+            - --insecure-skip-tls-verify
           volumeMounts:
             - name: ca
               mountPath: /etc/ssl/certs/ca.crt
