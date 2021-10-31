@@ -3,17 +3,12 @@ kind: ConfigMap
 metadata:
   name: argocd-cm
 data:
+  url: https://argocd.example.com
   dex.config: |
     connectors:
-    - type: github
-      id: github
-      name: GitHub
-      config:
-        clientID: e2ae5b8b705e0c0f16c7
-        clientSecret: $dex.github.clientSecret
-    # staticClients:
-    #   - id: argo-workflows-sso
-    #     name: Argo Workflow
-    #     redirectURIs:
-    #       - https://argo-workflows.example.com/oauth2/callback
-    #     secretEnv: ARGO_WORKFLOWS_SSO_CLIENT_SECRET
+      - type: github
+        id: github
+        name: GitHub
+        config:
+          clientID: e2ae5b8b705e0c0f16c7
+          clientSecret: $dex.github.clientSecret
