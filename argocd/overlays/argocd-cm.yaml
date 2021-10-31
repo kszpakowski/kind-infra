@@ -4,13 +4,13 @@ metadata:
   name: argocd-cm
 data:
   dex.config: |
-        connectors:
-      - type: github
-        id: github
-        name: GitHub
-        config:
-          clientID: e2ae5b8b705e0c0f16c7
-          clientSecret: $dex.github.clientSecret
+    connectors:
+    - type: github
+      id: github
+      name: GitHub
+      config:
+        clientID: e2ae5b8b705e0c0f16c7
+        clientSecret: $dex.github.clientSecret
     staticClients:
       - id: argo-workflows-sso
         name: Argo Workflow
