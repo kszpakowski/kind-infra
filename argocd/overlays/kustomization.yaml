@@ -6,10 +6,10 @@ resources:
 - argo-workflows-sso-sealedsecret.yaml
 - argocd-ingress.yaml
 - argocd-sealedsecret.yaml
-- argocd-rbac-cm.yaml
 patchesStrategicMerge:
-# - dex-server.yaml
+- dex-server.yaml
 - argocd-cm.yaml
+- argocd-rbac-cm.yaml
 patches:
   # Hacky way to disable the default secret
   - target:
