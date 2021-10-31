@@ -9,7 +9,7 @@ spec:
     namespace: argocd
   project: default
   source:
-    path: ./argocd
+    path: ./argocd/overlays
     repoURL: https://github.com/kszpakowski/kind-infra.git
     targetRevision: HEAD
   syncPolicy:
