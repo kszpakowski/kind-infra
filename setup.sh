@@ -1,6 +1,8 @@
 kind create cluster --config cluster.yaml
 
+# TODO add installation of sealed secrets key
+
 # Argo CD
 kubectl create namespace argocd
-kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/v2.1.3/manifests/install.yaml
+kustomize build ./argocd/overlays | kubectl apply -n argocd -f -
 kubectl apply -f app-of-apps.yaml

@@ -7,7 +7,7 @@ resources:
 - argocd-ingress.yaml
 - argocd-sealedsecret.yaml
 patchesStrategicMerge:
-- dex-server.yaml
+# - dex-server.yaml
 - argocd-cm.yaml
 patches:
   # Hacky way to disable the default secret
