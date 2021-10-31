@@ -9,7 +9,7 @@ spec:
       containers:
         - name: argo-server
           args:
-            - k
+            - -k
             - server
             - --auth-mode=sso
           volumeMounts:
