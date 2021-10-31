@@ -9,9 +9,9 @@ spec:
       containers:
         - name: argo-server
           args:
+            - k
             - server
             - --auth-mode=sso
-            - --insecure-skip-tls-verify
           volumeMounts:
             - name: ca
               mountPath: /etc/ssl/certs/ca.crt
