@@ -9,3 +9,12 @@ resources:
 patchesStrategicMerge:
 - dex-server.yaml
 - argocd-cm.yaml
+patches:
+  # Hacky way to disable the default secret
+  - target:
+      kind: Secret
+      name: argocd-secret
+    patch: |-
+      - op: replace
+        path: /metadata/name
+        value: argocd-secret-dandling
