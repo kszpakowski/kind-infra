@@ -14,3 +14,9 @@ data:
           clientSecret: $dex.github.clientSecret
           orgs:
           - name: k13i
+    staticClients:
+      - id: argo-workflows-sso
+        name: Argo Workflow
+        redirectURIs:
+          - https://argo-workflows.example.com/oauth2/callback
+        secretEnv: ARGO_WORKFLOWS_SSO_CLIENT_SECRET
