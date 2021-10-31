@@ -19,7 +19,7 @@ spec:
       volumes:
         - name: ca
           configMap:
-            name: ca-cm
+            name: ca
 ---
 apiVersion: v1
 kind: ConfigMap
