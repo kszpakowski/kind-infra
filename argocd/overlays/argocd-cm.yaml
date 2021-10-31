@@ -12,3 +12,5 @@ data:
         config:
           clientID: e2ae5b8b705e0c0f16c7
           clientSecret: $dex.github.clientSecret
+          orgs:
+          - name: k13i
