@@ -6,6 +6,7 @@ resources:
 - argo-workflows-sso-sealedsecret.yaml
 - argocd-ingress.yaml
 - argocd-sealedsecret.yaml
+- argocd-rbac-cm.yaml
 patchesStrategicMerge:
 # - dex-server.yaml
 - argocd-cm.yaml
