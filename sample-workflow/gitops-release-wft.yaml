@@ -28,11 +28,12 @@ spec:
       container:
         image: golang:1.10
         command: [sh, -c]
-        args: ["git config --global user.email \"workflows@example.com\" && git config --global user.name \"release workflow\""]
-      outputs:
-        artifacts:
-          - name: repo
-            path: /src
+        args:  
+        - git config --global user.email \"workflows@example.com\" 
+        - "&&"
+        - git config --global user.name \"release workflow\""
+        - "&&"
+        - "git status"
     - name: update-version
       inputs:
         parameters:
