@@ -26,6 +26,7 @@ kind: ConfigMap
 metadata:
   name: workflow-controller-configmap
 data:
+  containerRuntimeExecutor: k8sapi
   # SSO Configuration for the Argo server.
   # You must also start argo server with `--auth-mode sso`.
   # https://argoproj.github.io/argo-workflows/argo-server-auth-mode/
