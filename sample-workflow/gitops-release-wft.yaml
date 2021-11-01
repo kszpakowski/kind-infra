@@ -10,6 +10,8 @@ spec:
       value: https://github.com/kszpakowski/gitops-workflows-demo.git
     - name: gitMail
       value: workflows@example.com
+    - name: gitUsername
+      value: release workflow
       # value: hello world
   templates:
     - name: workflow-steps
@@ -38,7 +40,7 @@ spec:
       container:
         image: golang:1.10
         command: [sh, -c]
-        args: [ "git config --global user.email \"{{inputs.parameters.gitMail}}\" && git config --global user.name \"release workflow\" && git status"]
+        args: [ "git config --global user.email \"{{inputs.parameters.gitMail}}\" && git config --global user.name \"{{inputs.parameters.gitUsername}}\" && echo \"tag:v0.2.0\" > values.yaml && git add values.yaml && git commit -m \"values update\""]
         workingDir: /src
     - name: update-version
       inputs:
