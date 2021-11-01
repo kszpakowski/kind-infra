@@ -1,0 +1,31 @@
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: gitops-release
+spec:
+  entrypoint: workflow-steps
+  templates:
+    - name: workflow-steps
+      steps:
+      - - name: clone-repo
+          template: git-clone
+      - - name: update-version
+          template: update-version
+    - name: git-clone
+      inputs:
+        parameters:
+          - name: msg
+            value: "cloning repository"
+      container:
+        image: docker/whalesay
+        command: [cowsay]
+        args: ["{{inputs.parameters.msg}}"]
+    - name: update-version
+      inputs:
+        parameters:
+          - name: msg
+            value: "updating version"
+      container:
+        image: docker/whalesay
+        command: [cowsay]
+        args: ["{{inputs.parameters.msg}}"]
