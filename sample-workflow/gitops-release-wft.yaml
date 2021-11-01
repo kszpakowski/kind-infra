@@ -4,6 +4,12 @@ metadata:
   name: gitops-release
 spec:
   entrypoint: workflow-steps
+  arguments:
+    parameters:
+    - name: repoURL
+    - name: gitMail
+      value: workflows@example.com
+      # value: hello world
   templates:
     - name: workflow-steps
       steps:
@@ -19,16 +25,19 @@ spec:
       #     template: send-notification
     - name: git-clone
       inputs:
+        parameters: 
+          - name: repoURL
+          - name: gitMail
         artifacts:
         - name: config-repo
           path: /src
           git:
-            repo: https://github.com/kszpakowski/gitops-workflows-demo.git
+            repo: "{{inputs.parameters.repoURL}}"
             revision: "master"
       container:
         image: golang:1.10
         command: [sh, -c]
-        args: [ "git config --global user.email \"workflows@example.com\" && git config --global user.name \"release workflow\" && echo {{steps.clone-repo.id}} && git status"]
+        args: [ "git config --global user.email \"{{inputs.parameters.gitMail}}\" && git config --global user.name \"release workflow\" && git status"]
         workingDir: /src
     - name: update-version
       inputs:
