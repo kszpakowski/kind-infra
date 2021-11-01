@@ -29,6 +29,7 @@ spec:
         image: golang:1.10
         command: [sh, -c]
         args: [ "git config --global user.email \"workflows@example.com\" && git config --global user.name \"release workflow\" && git status"]
+        workdir: /src
     - name: update-version
       inputs:
         parameters:
