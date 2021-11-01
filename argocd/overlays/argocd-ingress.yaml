@@ -23,4 +23,4 @@ spec:
   tls:
   - hosts:
     - argocd.example.com
-    secretName: argocd-example-com-secret
+    secretName: argocd-tls
