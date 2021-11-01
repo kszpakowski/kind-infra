@@ -10,4 +10,3 @@ spec:
     metadata:
       name: repo-creds
       namespace: workflows-demo
-
