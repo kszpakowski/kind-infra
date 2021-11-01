@@ -11,6 +11,12 @@ spec:
           template: git-clone
       - - name: update-version
           template: update-version
+      - - name: commit-new-version
+          template: commit-new-version
+      - - name: create-pull-request
+          template: create-pull-request
+      - - name: send-notification
+          template: send-notification
     - name: git-clone
       inputs:
         parameters:
@@ -25,6 +31,33 @@ spec:
         parameters:
           - name: msg
             value: "updating version"
+      container:
+        image: docker/whalesay
+        command: [cowsay]
+        args: ["{{inputs.parameters.msg}}"]
+    - name: commit-new-version
+      inputs:
+        parameters:
+          - name: msg
+            value: "commiting-new-version"
+      container:
+        image: docker/whalesay
+        command: [cowsay]
+        args: ["{{inputs.parameters.msg}}"]
+    - name: create-pull-request
+      inputs:
+        parameters:
+          - name: msg
+            value: "creating pull request"
+      container:
+        image: docker/whalesay
+        command: [cowsay]
+        args: ["{{inputs.parameters.msg}}"]
+    - name: send-notification
+      inputs:
+        parameters:
+          - name: msg
+            value: "sending notification"
       container:
         image: docker/whalesay
         command: [cowsay]
