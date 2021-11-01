@@ -45,6 +45,7 @@ spec:
           - >
               git config --global user.email "{{inputs.parameters.gitMail}}"
               && git config --global user.name "{{inputs.parameters.gitUsername}}" 
+              && git checkout -b feature/update-version
               && echo "tag:v0.2.0" > values.yaml 
               && git add values.yaml 
               && git commit -m "values update"
