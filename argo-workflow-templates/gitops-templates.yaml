@@ -1,0 +1,170 @@
+# based on https://arctiq.ca/2020/07/13/ci-cd-with-argo/
+apiVersion: argoproj.io/v1alpha1
+kind: ClusterWorkflowTemplate
+metadata:
+  name: gitops-templates
+spec:
+  templates:
+  - name: git-checkout-private
+    inputs:
+      parameters:
+      - name: repo
+      - name: revision
+      - name: sshsecret
+      - name: sshsecretkey
+      artifacts:
+      - name: source
+        path: /src
+        git:
+          repo: "{{inputs.parameters.repo}}"
+          revision: "{{inputs.parameters.revision}}"
+          sshPrivateKeySecret:
+            name: "{{inputs.parameters.sshsecret}}"
+            key: "{{inputs.parameters.sshsecretkey}}"
+    outputs:
+      artifacts:
+      - name: source
+        path: /src
+    container:
+      image: gcr.io/arctiqteam-images/git:v1
+      command: ["/bin/sh", "-c"]
+      args: ["cd /src && git status && ls -l"]
+    activeDeadlineSeconds: 60
+
+  - name: build-and-push
+    inputs:
+      artifacts:
+      - name: source
+        path: /workspace
+      parameters:
+      - name: pathToDockerFile
+      - name: imageUrl
+      - name: imageTag
+      - name: pathToContext
+    container:
+      image: gcr.io/kaniko-project/executor:latest
+      args: ["--dockerfile","{{inputs.parameters.pathToDockerFile}}","--destination","{{inputs.parameters.imageUrl}}:{{inputs.parameters.imageTag}}","--context","{{inputs.parameters.pathToContext}}","--build-arg","PRODUCT_VERSION={{inputs.parameters.imageTag}}"]
+      env:
+        - name: "GOOGLE_APPLICATION_CREDENTIALS"
+          value: "/secret/google.json"
+      volumeMounts:
+      - name: gcr-creds
+        mountPath: "/secret"
+    activeDeadlineSeconds: 60
+
+  - name: git-new-branch
+    inputs:
+      parameters:
+      - name: release
+      - name: repo
+    outputs:
+      artifacts:
+      - name: source
+        path: /git
+    container:
+      image: gcr.io/arctiqteam-images/git:v2.0.4
+      command: ["/bin/sh", "-c"]
+      args: ["git clone {{inputs.parameters.repo}} /git && git checkout -b {{inputs.parameters.release}}-update"]
+      volumeMounts:
+        - mountPath: "/opt/ssh"
+          name: ssh-deploy-creds
+    activeDeadlineSeconds: 60
+
+  - name: git-commit
+    inputs:
+      parameters:
+      - name: release
+      - name: author
+      - name: email
+      artifacts:
+      - name: source
+        path: /git
+    outputs:
+      artifacts:
+      - name: source
+        path: /git
+    container:
+      image: gcr.io/arctiqteam-images/git:v2.0.4
+      command: ["/bin/sh", "-c"]
+      args: ["git add * && git commit -m 'change to image {{inputs.parameters.release}}-update' && git push --set-upstream origin {{inputs.parameters.release}}-update"]
+      env:
+        - name: "GIT_AUTHOR_NAME"
+          value: "{{inputs.parameters.author}}"
+        - name: "GIT_AUTHOR_EMAIL"
+          value: "{{inputs.parameters.email}}"
+        - name: "GIT_COMMITTER_NAME"
+          value: "{{inputs.parameters.author}}"
+        - name: "GIT_COMMITTER_EMAIL"
+          value: "{{inputs.parameters.email}}"
+      volumeMounts:
+        - mountPath: "/opt/ssh"
+          name: ssh-deploy-creds
+    activeDeadlineSeconds: 60
+
+  - name: kustomize-image
+    inputs:
+      parameters:
+      - name: release
+      - name: imageUrl
+      artifacts:
+      - name: source
+        path: /git
+    outputs:
+      artifacts:
+      - name: source
+        path: /git
+    container:
+      image: gcr.io/arctiqteam-images/kustomizer:v3.3.0
+      args:
+        - edit
+        - set
+        - image
+        - "{{inputs.parameters.imageUrl}}:{{inputs.parameters.release}}"
+      workingDir: /git
+    activeDeadlineSeconds: 60
+
+  - name: git-pr
+    inputs:
+      artifacts:
+      - name: source
+        path: /git
+    container:
+      image: gcr.io/arctiqteam-images/git:v2.0.4
+      command: ["/bin/sh", "-c"]
+      args: ["hub pull-request --no-edit"]
+      env:
+      - name: GITHUB_USER
+        valueFrom:
+          secretKeyRef:
+            name: github-basic
+            key: username
+      - name: GITHUB_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            name: github-basic
+            key: personal_access_token
+    activeDeadlineSeconds: 60
+
+  - name: artifact-cleanup
+    inputs:
+      parameters:
+      - name: path
+    container:
+      image: minio/mc
+      command: ["/bin/sh","-c"]
+      args: ["MC_HOST_argo=http://$MINIO_LOGIN:$MINIO_PWD@$MINIO_HOST mc rm -r --force {{inputs.parameters.path}}/{{workflow.name}}"]
+      env:
+      - name: MINIO_HOST
+        value: "argo-minio:9000"
+      - name: MINIO_LOGIN
+        valueFrom:
+          secretKeyRef:
+            name: argo-minio
+            key: accesskey
+      - name: MINIO_PWD
+        valueFrom:
+          secretKeyRef:
+            name: argo-minio
+            key: secretkey
+    activeDeadlineSeconds: 60
+    
