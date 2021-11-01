@@ -5,8 +5,8 @@ metadata:
 spec:
   secretName: argocd-example-com-tls
 
-  duration: 2160h # 90d
-  renewBefore: 360h # 15d
+  duration: 2160h0m0s # 90d
+  renewBefore: 360h0m0s # 15d
   # subject:
     # organizations:
       # - jetstack
@@ -14,7 +14,6 @@ spec:
   # The use of the common name field has been deprecated since 2000 and is
   # discouraged from being used.
   # commonName: example.com
-  isCA: false
   privateKey:
     algorithm: RSA
     encoding: PKCS1
