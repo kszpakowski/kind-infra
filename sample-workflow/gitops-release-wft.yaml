@@ -7,7 +7,7 @@ spec:
   arguments:
     parameters:
     - name: repoURL
-      value: ""
+      value: https://github.com/kszpakowski/gitops-workflows-demo.git
     - name: gitMail
       value: workflows@example.com
       # value: hello world
