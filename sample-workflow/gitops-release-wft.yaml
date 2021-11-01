@@ -49,7 +49,7 @@ spec:
               && echo "tag:v0.2.0" > values.yaml 
               && git add values.yaml 
               && git commit -m "values update"
-              && git push
+              && git push -set-upstream origin feature/update-version
         workingDir: /src
     - name: update-version
       inputs:
