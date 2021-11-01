@@ -31,6 +31,7 @@ spec:
         parameters: 
           - name: repoURL
           - name: gitMail
+          - name: gitUsername
         artifacts:
         - name: config-repo
           path: /src
