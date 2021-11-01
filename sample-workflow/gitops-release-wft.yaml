@@ -43,11 +43,11 @@ spec:
         command: [sh, -c]
         args: 
           - >
-              git config --global user.email \"{{inputs.parameters.gitMail}}\"
-              && git config --global user.name \"{{inputs.parameters.gitUsername}}\" 
-              && echo \"tag:v0.2.0\" > values.yaml 
+              git config --global user.email "{{inputs.parameters.gitMail}}"
+              && git config --global user.name "{{inputs.parameters.gitUsername}}" 
+              && echo "tag:v0.2.0" > values.yaml 
               && git add values.yaml 
-              && git commit -m \"values update\"
+              && git commit -m "values update"
         workingDir: /src
     - name: update-version
       inputs:
