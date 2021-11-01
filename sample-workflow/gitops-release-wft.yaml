@@ -38,6 +38,9 @@ spec:
           git:
             repo: "{{inputs.parameters.repoURL}}"
             revision: "master"
+            sshPrivateKeySecret:
+              name: repo-creds
+              key: ssh-private-key
       container:
         image: golang:1.10
         command: [sh, -c]
