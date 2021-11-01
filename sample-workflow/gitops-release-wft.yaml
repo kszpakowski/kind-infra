@@ -9,23 +9,30 @@ spec:
       steps:
       - - name: clone-repo
           template: git-clone
-      - - name: update-version
-          template: update-version
-      - - name: commit-new-version
-          template: commit-new-version
-      - - name: create-pull-request
-          template: create-pull-request
-      - - name: send-notification
-          template: send-notification
+      # - - name: update-version
+      #     template: update-version
+      # - - name: commit-new-version
+      #     template: commit-new-version
+      # - - name: create-pull-request
+      #     template: create-pull-request
+      # - - name: send-notification
+      #     template: send-notification
     - name: git-clone
       inputs:
-        parameters:
-          - name: msg
-            value: "cloning repository"
+        artifacts:
+        - name: config-repo
+          path: /src
+          git:
+            repo: https://github.com/kszpakowski/gitops-workflows-demo.git
+            revision: "master"
       container:
-        image: docker/whalesay
-        command: [cowsay]
-        args: ["{{inputs.parameters.msg}}"]
+        image: golang:1.10
+        command: [sh, -c]
+        args: ["git config --global user.email \"workflows@example.com\" && git config --global user.name \"release workflow\""]
+      outputs:
+        artifacts:
+          - name: repo
+            path: /src
     - name: update-version
       inputs:
         parameters:
