@@ -28,7 +28,7 @@ spec:
       container:
         image: golang:1.10
         command: [sh, -c]
-        args: [ "git config --global user.email \"workflows@example.com\" && git config --global user.name \"release workflow\" && git status"]
+        args: [ "git config --global user.email \"workflows@example.com\" && git config --global user.name \"release workflow\" && echo {{steps.clone-repo.id}} && git status"]
         workingDir: /src
     - name: update-version
       inputs:
