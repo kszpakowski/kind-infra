@@ -3,7 +3,7 @@ kind: WorkflowTemplate
 metadata:
   name: gitops-release
 spec:
-  entrypoint: workflow-steps
+  entrypoint: git-clone
   arguments:
     parameters:
     - name: repoURL
