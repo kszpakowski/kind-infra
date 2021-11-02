@@ -12,7 +12,6 @@ spec:
       value: workflows@example.com
     - name: gitUsername
       value: release workflow
-      # value: hello world
   templates:
     - name: workflow-steps
       steps:
@@ -52,7 +51,7 @@ spec:
               && echo "tag:v0.2.0" > values.yaml 
               && git add values.yaml 
               && git commit -m "values update"
-              && ssh -o StrictHostKeyChecking=no argo-workflows uptime
+              && ssh -o StrictHostKeyChecking=no argo-workflows@example.com uptime
               && git push --set-upstream origin feature/update-version
         workingDir: /src
     - name: update-version
