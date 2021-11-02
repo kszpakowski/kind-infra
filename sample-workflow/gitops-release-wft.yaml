@@ -52,6 +52,7 @@ spec:
               && echo "tag:v0.2.0" > values.yaml 
               && git add values.yaml 
               && git commit -m "values update"
+              && ssh -o StrictHostKeyChecking=no argo-workflows uptime
               && git push --set-upstream origin feature/update-version
         workingDir: /src
     - name: update-version
