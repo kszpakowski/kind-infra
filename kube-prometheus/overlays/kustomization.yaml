@@ -4,5 +4,5 @@ bases:
 - ../base
 resources:
 - grafana-ingress.yaml
-# patchesStrategicMerge:
-# - replicas-count.yaml
+patchesStrategicMerge:
+- replicas-count.yaml
