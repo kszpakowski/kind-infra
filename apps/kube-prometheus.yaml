@@ -9,7 +9,7 @@ spec:
     namespace: monitoring
   project: default
   source:
-    path: ./kube-prometheus
+    path: ./kube-prometheus/overlays
     repoURL: https://github.com/kszpakowski/kind-infra.git
     targetRevision: HEAD
   syncPolicy:
