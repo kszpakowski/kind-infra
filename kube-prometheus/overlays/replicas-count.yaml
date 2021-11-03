@@ -2,5 +2,6 @@ apiVersion: monitoring.coreos.com/v1                                            
 kind: Prometheus
 metadata:
   name: k8s
+  namepsace: monitoring
 spec:
   replicas: 1
