@@ -1,4 +1,6 @@
-# based on https://arctiq.ca/2020/07/13/ci-cd-with-argo/
+# based on 
+# - https://arctiq.ca/2020/07/13/ci-cd-with-argo/
+# - https://github.dev/vfarcic/argo-combined-demo
 apiVersion: argoproj.io/v1alpha1
 kind: ClusterWorkflowTemplate
 metadata:
